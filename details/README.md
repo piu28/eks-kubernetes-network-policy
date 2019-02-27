@@ -1,11 +1,13 @@
 ## BookInfo Application - Details
 
-Details is a Ruby microservice which contains book information.
-Build a docker image:
+Deploy Details Service
 ```
-docker build -t details .
+    cd details
+    docker build -t details .
+    docker tag details ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com/details:v1.0
+    docker push ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com/details:v1.0
 ```
-Push the image to DockerHub or ECR and replace the IMAGE variable in k8s/deployment.yaml with the Docker Image.
-Deploy it using command:
+Update the image in the deployment manifest in k8s directory and execute the below command to deploy:
 ```
-kubectl apply -f k8s
+    kubectl apply -f k8s
+```
