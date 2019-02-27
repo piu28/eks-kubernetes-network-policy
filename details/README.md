@@ -1,4 +1,4 @@
-<img src="/images/ruby.png" align="right" />
+<img src="../images/ruby.png" align="right" />
 
 ## BookInfo Application - Details
 > Details is a Ruby microservice which contains book information.
