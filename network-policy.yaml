@@ -1,0 +1,61 @@
+kind: NetworkPolicy
+apiVersion: extensions/v1beta1
+metadata:
+   name: allow-mysql-access
+spec:
+   podSelector:
+      matchLabels:
+         app: ratings-mysql
+   ingress:
+   - from:
+      - podSelector:
+          matchLabels:
+            app: ratings
+     ports:
+     - protocol: TCP
+       port: 3306
+---
+kind: NetworkPolicy
+apiVersion: extensions/v1beta1
+metadata:
+   name: allow-details-access
+spec:
+   podSelector:
+      matchLabels:
+         app: details
+   ingress:
+   - from:
+      - podSelector:
+          matchLabels:
+            app: productpage
+---
+kind: NetworkPolicy
+apiVersion: extensions/v1beta1
+metadata:
+   name: allow-ratings-access
+spec:
+   podSelector:
+      matchLabels:
+         app: ratings
+   ingress:
+   - from:
+      - podSelector:
+          matchLabels:
+            app: productpage
+      - podSelector:
+          matchLabels:
+            app: reviews
+---
+kind: NetworkPolicy
+apiVersion: extensions/v1beta1
+metadata:
+   name: allow-review-access
+spec:
+   podSelector:
+      matchLabels:
+         app: reviews
+   ingress:
+   - from:
+      - podSelector:
+          matchLabels:
+            app: productpage
