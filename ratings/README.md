@@ -1,15 +1,23 @@
 ## BookInfo Application - Ratings
-
-Ratings is a Javascript microservice which fetches ratings from a MySQL Database. We have provisioned a MySQL RDS DB Instance and imported the dump provided in "mysql" subdirectory.
-The RDS credentials can be replaced in k8s/deployment.yaml. If using Jenkinsfile, you can securely store your RDS details with Jenkins Credentials:
-* Secret text "rds-host" for Database host and 
-* Encrypted Username/Password "rds-creds" for Database Username/Password.
-Build a docker image:
+> Ratings is a Javascript microservice which fetches ratings from a MySQL Database.
+Update the root password variable in the Dockerfile and create a docker image.
 ```
-docker build -t details .
+cd ratings/mysql
+docker build -t ratings-mysql .
+docker tag ratings-mysql ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com/ratings-mysql:v1.0
+docker push ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com/ratings-mysql:v1.0
 ```
-Push the image to DockerHub or ECR and replace the IMAGE variable in k8s/deployment.yaml with the Docker Image.
-Deploy service using command:
+Push the docker image for ratings as well. Update the deployment manifests with the Database Credentials.
 ```
-kubectl apply -f k8s
+cd ratings
+docker build -t ratings .
+docker tag ratings-mysql ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com/ratings:v1.0
+docker push ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com/ratings:v1.0
+```
+Update the images in deployment manifest in k8s directory and execute the below command to deploy.
+```
+kubectl apply -f k8s/mysql-deployment.yaml
+kubectl apply -f k8s/mysql-service.yaml
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
 ```
